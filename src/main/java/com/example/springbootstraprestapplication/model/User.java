@@ -31,11 +31,12 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinTable(name = "users_roles",
-                joinColumns = @JoinColumn(name = "user_id" /*referencedColumnName = "id"*/),
-                inverseJoinColumns = @JoinColumn(name = "role_id" /*referencedColumnName = "id")*/))
-    Set<Role> roles;
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+            Set<Role> roles;
+
 
 
     public User() {}
@@ -140,4 +141,5 @@ public class User implements UserDetails {
         }
         return role.toString();
     }
+
 }

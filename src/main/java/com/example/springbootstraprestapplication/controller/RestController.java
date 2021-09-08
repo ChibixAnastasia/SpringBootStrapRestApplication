@@ -5,6 +5,7 @@ import com.example.springbootstraprestapplication.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -16,6 +17,14 @@ public class RestController {
 
     public RestController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<User> currentUser(Principal principal) {
+        User user = (User) userService.loadUserByUsername(principal.getName());
+        System.out.println(user);
+        return ResponseEntity.ok().body(user);
+
     }
 
     @GetMapping()

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 
-@Repository
+//@Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
     public Role findByName(String name);
 }

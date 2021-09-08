@@ -16,4 +16,5 @@ public class SpringBootStrapRestApplication implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
 	}
+	
 }

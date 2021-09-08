@@ -31,7 +31,7 @@ public class AdminController {
         User user = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("users", userService.getAllUsers());
-        return "admin";
+        return "test";
     }
 
 
