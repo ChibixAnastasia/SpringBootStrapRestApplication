@@ -1,7 +1,6 @@
 package com.example.springbootstraprestapplication.controller;
 
 
-import com.example.springbootstraprestapplication.model.Role;
 import com.example.springbootstraprestapplication.model.User;
 import com.example.springbootstraprestapplication.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -9,8 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -19,7 +16,6 @@ public class AdminController {
 
     private final UserService userService;
 
-    //private final RoleService roleService;
 
     public AdminController(UserService userService) {
         this.userService = userService;
@@ -31,11 +27,11 @@ public class AdminController {
         User user = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("users", userService.getAllUsers());
-        return "test";
+        return "admin";
     }
 
 
-    @PostMapping("/edit")
+    /*@PostMapping("/edit")
     public String updateUser(@RequestParam("id") long id,
                              @RequestParam(value = "firstname", required = false) String firstName,
                              @RequestParam(value = "lastname", required = false) String lastName,
@@ -81,6 +77,6 @@ public class AdminController {
         user.setRoles(role);
         userService.saveUser(user);
         return "redirect:/admin";
-    }
+    }*/
 
 }

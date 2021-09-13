@@ -22,7 +22,6 @@ public class RestController {
     @GetMapping("/current")
     public ResponseEntity<User> currentUser(Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
-        System.out.println(user);
         return ResponseEntity.ok().body(user);
 
     }

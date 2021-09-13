@@ -10,7 +10,7 @@ public class LoginController {
 
     @GetMapping
     @RequestMapping("/login")
-    public String longin() {
-        return "redirect:/login";
+    public String login() {
+        return "login";
     }
 }

@@ -60,8 +60,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public Role findRoleByName(String name) {
-        return roleRepository.findByName(name);
+    public Role findRoleById(long id) {
+        return roleRepository.findById(id);
     }
 
     @Override

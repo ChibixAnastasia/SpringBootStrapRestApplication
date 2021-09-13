@@ -19,21 +19,23 @@ async function createTable() {
         let userid = users[i].id;
         let firstName = users[i].firstName;
         let lastName = users[i].lastName;
+        let age = users[i].age;
         let email = users[i].email;
         let userRoles = listRoles;
 
-        let tr = $("<tr align=\"center\">")//.attr("id", i);
+        let tr = $("<tr align=\"center\">").attr("id", i);
         tr.append("" +
             "<td>" + userid + "</td>" +
             "<td>" + firstName + "</td>" +
             "<td>" + lastName + "</td>" +
-            "<td>" + email + "</td>" + //"<td>" + password + "</td>" +
+            "<td>" + age + "</td>" +
+            "<td>" + email + "</td>" +
             "<td>" + userRoles + "</td>" +
 
             "<td><button onclick='getUser("+ users[i].id + ")' class='btn btn-md btn-info eBtn' data-toggle='modal' data-target='#editModal'>Edit</button></td>" +
             "<td><button onclick='UserForDelete("+ users[i].id + ")' class='btn btn-md btn-danger eBtn' data-toggle='modal' data-target='#deleteModal'>Delete</button></td>"
         );
-        $("#allUser").append(tr)
+        $("#usersTable").append(tr)
     }
 }
 
@@ -42,17 +44,20 @@ function addUser() {
         event.preventDefault()
 
         let role = [];
+
         let arr = Array.from(document.getElementById("role0").options).filter(option => option.selected)
                                                                                 .map(option => option.value)
+
         for(let i = 0; i < arr.length; i++) {
-            role.push({name:arr[i]})
+            role.push({id:arr[i]})
         }
 
         let user = {
             firstName: $("#firstName0").val(),
             lastName: $("#lastname0").val(),
+            age: $("#age0").val(),
             email: $("#email0").val(),
-            password: $("#password1").val(),
+            password: $("#password0").val(),
             roles: role
         }
 
@@ -73,6 +78,7 @@ async function getUser(id) {
     $(".editForm #id1").val(user.id);
     $(".editForm #firstName1").val(user.firstName);
     $(".editForm #lastname1").val(user.lastName);
+    $(".editForm #age1").val(user.age);
     $(".editForm #email1").val(user.email);
    $(".editForm #password1").val(user.password);
 
@@ -85,13 +91,14 @@ function editUser() {
         let role = [];
         let arr = Array.from(document.getElementById("role1").options).filter(option => option.selected).map(option => option.value)
         for(let i = 0; i < arr.length; i++) {
-            role.push({name:arr[i]})
+            role.push({id:arr[i]})
         }
 
         let user = {
             id: $("#id1").val(),
             firstName: $("#firstName1").val(),
             lastName: $("#lastname1").val(),
+            age: $("#age1").val(),
             email: $("#email1").val(),
             password: $("#password1").val(),
             roles: role
@@ -115,6 +122,7 @@ async function UserForDelete(id) {
     $("#deleteForm #id2").val(user.id);
     $("#deleteForm #firstName2").val(user.firstName);
     $("#deleteForm #lastname2").val(user.lastName);
+    $("#deleteForm #age2").val(user.age);
     $("#deleteForm #email2").val(user.email);
     $("#deleteForm #password2").val(user.password);
 
