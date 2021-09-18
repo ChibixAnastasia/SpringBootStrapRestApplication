@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface UserService extends UserDetailsService {
@@ -22,5 +23,9 @@ public interface UserService extends UserDetailsService {
 
     User findUserByEmail(String email);
 
+    Role findRoleByName(String name);
+
     Role findRoleById(long id);
+
+    List<Role> getAllRoles();
 }

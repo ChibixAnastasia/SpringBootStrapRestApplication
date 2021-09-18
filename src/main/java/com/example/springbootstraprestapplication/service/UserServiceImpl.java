@@ -8,11 +8,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
@@ -60,8 +63,21 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
+    public Role findRoleByName(String name) {
+        return roleRepository.findByName(name);
+    }
+
+
+    @Override
+    @Transactional
     public Role findRoleById(long id) {
         return roleRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
     @Override

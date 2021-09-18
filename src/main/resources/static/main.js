@@ -1,19 +1,21 @@
+
 $(document).ready(function () {
     createTable();
     editUser();
     addUser();
 })
 
+
 async function createTable() {
 
-    let response = await fetch("/api")
+    let response = await fetch("/api");
     let users = await response.json()
-    console.log(users)
+    console.log(users);
 
     for (let i = 0; i < users.length; i++) {
 
         let listRoles = '';
-        for (let element of users[i].authorities) {
+        for (let element of users[i].roles) {
             listRoles += " " + element.name.replaceAll("ROLE_", "");
         }
         let userid = users[i].id;
@@ -43,14 +45,12 @@ function addUser() {
     $("#addNewUser").submit(async function(event) {
         event.preventDefault()
 
-        let role = [];
+        let response = await fetch("/api/roles");
+        let allRoles = await response.json();
 
-        let arr = Array.from(document.getElementById("role0").options).filter(option => option.selected)
-                                                                                .map(option => option.value)
+        let arr = Array.from(document.getElementById("role0").options).filter(option => option.selected).map(option => option.value)
 
-        for(let i = 0; i < arr.length; i++) {
-            role.push({id:arr[i]})
-        }
+        let rolesForUser = generatedRoles(arr, allRoles)
 
         let user = {
             firstName: $("#firstName0").val(),
@@ -58,7 +58,7 @@ function addUser() {
             age: $("#age0").val(),
             email: $("#email0").val(),
             password: $("#password0").val(),
-            roles: role
+            roles: rolesForUser
         }
 
         await fetch('/api/',
@@ -88,11 +88,12 @@ function editUser() {
     $("#editForm").submit(async function (event) {
         event.preventDefault()
 
-        let role = [];
-        let arr = Array.from(document.getElementById("role1").options).filter(option => option.selected).map(option => option.value)
-        for(let i = 0; i < arr.length; i++) {
-            role.push({id:arr[i]})
-        }
+        let response = await fetch("/api/roles");
+        let allRoles = await response.json();
+
+        let arr1 = Array.from(document.getElementById("role1").options).filter(option => option.selected).map(option => option.value)
+
+        let rolesForUser = generatedRoles(arr1, allRoles);
 
         let user = {
             id: $("#id1").val(),
@@ -101,7 +102,7 @@ function editUser() {
             age: $("#age1").val(),
             email: $("#email1").val(),
             password: $("#password1").val(),
-            roles: role
+            roles: rolesForUser
         }
 
         console.log(user)
@@ -133,4 +134,21 @@ async function UserForDelete(id) {
             {method: 'DELETE'});
         window.location.href = "/admin"
     })
+}
+
+function generatedRoles(selectedValue, rolesInDataBase) {
+    let value = [];
+    for(let i = 0; i < selectedValue.length; i++) {
+        value.push(parseInt(selectedValue[i]));
+    }
+
+    let roleArray = [];
+    for(let i = 0; i < value.length; i++) {
+        if (value[i] === 1) {
+            roleArray.push(rolesInDataBase[0])
+        } else if (value[i] === 2) {
+            roleArray.push(rolesInDataBase[1])
+        }
+    }
+    return roleArray;
 }
