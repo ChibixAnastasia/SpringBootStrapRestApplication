@@ -21,6 +21,11 @@ public class RestController {
         this.userService = userService;
     }
 
+    @GetMapping("/roles/{roleName}")
+    public ResponseEntity<Role> getRoleById(@PathVariable("roleName") String roleName) {
+        return ResponseEntity.ok().body(userService.findRoleByName(roleName));
+    }
+
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> allRoles() {
         return ResponseEntity.ok().body(userService.getAllRoles());
@@ -48,6 +53,7 @@ public class RestController {
         for(Role role : roles) {
             System.out.println(role);
         }
+        //Роли сетяться правильно, проверенно 3 способами
         userService.saveUser(user);
         return ResponseEntity.ok().body(user);
     }

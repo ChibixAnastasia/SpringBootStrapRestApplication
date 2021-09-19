@@ -3,7 +3,10 @@ $(document).ready(function () {
     createTable();
     editUser();
     addUser();
+
 })
+
+
 
 
 async function createTable() {
@@ -45,12 +48,15 @@ function addUser() {
     $("#addNewUser").submit(async function(event) {
         event.preventDefault()
 
-        let response = await fetch("/api/roles");
-        let allRoles = await response.json();
-
         let arr = Array.from(document.getElementById("role0").options).filter(option => option.selected).map(option => option.value)
 
-        let rolesForUser = generatedRoles(arr, allRoles)
+        let rolesForUser = [];
+
+        for(let i = 0; i < arr.length; i++) {
+            let response = await fetch('/api/roles/' + arr[i])
+            let roles = await response.json()
+            rolesForUser.push(roles)
+        }
 
         let user = {
             firstName: $("#firstName0").val(),
@@ -88,12 +94,16 @@ function editUser() {
     $("#editForm").submit(async function (event) {
         event.preventDefault()
 
-        let response = await fetch("/api/roles");
-        let allRoles = await response.json();
 
         let arr1 = Array.from(document.getElementById("role1").options).filter(option => option.selected).map(option => option.value)
 
-        let rolesForUser = generatedRoles(arr1, allRoles);
+        let rolesForUser = [];
+
+        for (let i = 0; i < arr1.length; i++) {
+            let response = await fetch('/api/roles/' + arr1[i])
+            let roles = await response.json()
+            rolesForUser.push(roles)
+        }
 
         let user = {
             id: $("#id1").val(),
@@ -136,7 +146,8 @@ async function UserForDelete(id) {
     })
 }
 
-function generatedRoles(selectedValue, rolesInDataBase) {
+//Эта фанкция, котороя создает массив ролей для юзера, принимающая два массива(масив ролей из базы, и массив значений из тега select)
+/*function generatedRoles(selectedValue, rolesInDataBase) {
     let value = [];
     for(let i = 0; i < selectedValue.length; i++) {
         value.push(parseInt(selectedValue[i]));
@@ -151,4 +162,5 @@ function generatedRoles(selectedValue, rolesInDataBase) {
         }
     }
     return roleArray;
-}
+}*/
+
