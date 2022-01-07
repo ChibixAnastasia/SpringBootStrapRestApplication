@@ -1,34 +1,34 @@
 package com.example.springbootstraprestapplication.controller;
 
+import com.example.springbootstraprestapplication.dto.UserDto;
+import com.example.springbootstraprestapplication.mapper.UserMapper;
 import com.example.springbootstraprestapplication.model.Role;
 import com.example.springbootstraprestapplication.model.User;
+import com.example.springbootstraprestapplication.service.RoleService;
 import com.example.springbootstraprestapplication.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
+
 
 
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
-public class RestController {
+public class RestAdminController {
 
     private final UserService userService;
 
-    public RestController(UserService userService) {
+    private final RoleService roleService;
+
+    private final UserMapper userMapper;
+
+    public RestAdminController(UserService userService, RoleService roleService, UserMapper userMapper) {
         this.userService = userService;
-    }
-
-    @GetMapping("/roles/{roleName}")
-    public ResponseEntity<Role> getRoleById(@PathVariable("roleName") String roleName) {
-        return ResponseEntity.ok().body(userService.findRoleByName(roleName));
-    }
-
-    @GetMapping("/roles")
-    public ResponseEntity<List<Role>> allRoles() {
-        return ResponseEntity.ok().body(userService.getAllRoles());
+        this.roleService = roleService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/current")
@@ -37,7 +37,7 @@ public class RestController {
         return ResponseEntity.ok().body(user);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<User>> allUsers() {
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
@@ -47,23 +47,16 @@ public class RestController {
         return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
-    @PostMapping()
-    public ResponseEntity<User> newUser(@RequestBody User user) {
-        Set<Role> roles = user.getRoles();
-        for(Role role : roles) {
-            System.out.println(role);
-        }
-        //Роли сетяться правильно, проверенно 3 способами
+    @PostMapping("/new")
+    public ResponseEntity<User> newUser(@RequestBody UserDto userDto) {
+        User user = userMapper.dtoToEntity(userDto);
         userService.saveUser(user);
         return ResponseEntity.ok().body(user);
     }
 
-    @PutMapping()
-    public ResponseEntity<User> update(@RequestBody User user) {
-        Set<Role> role = user.getRoles();
-        for(Role roles: role) {
-            System.out.println(roles.getName());
-        }
+    @PutMapping("/edit")
+    public ResponseEntity<User> update(@RequestBody UserDto userDto) {
+        User user = userMapper.dtoToEntity(userDto);
         userService.updateUser(user);
         return ResponseEntity.ok().body(user);
     }
